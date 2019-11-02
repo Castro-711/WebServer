@@ -1,7 +1,13 @@
 package org.x.server
 
 import akka.actor.ActorSystem
+import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
+import akka.http.scaladsl.model._
+import akka.http.scaladsl.server.Directives._
+import akka.stream.ActorMaterializer
+
+import scala.io.StdIn
 
 /**
   * The high-level, routing API of Akka HTTP provides a DSL to describe HTTP "routes"
@@ -21,6 +27,23 @@ object WebServer {
 
     implicit val system = ActorSystem("my-system")
     implicit val materializer = ActorMaterializer()
+    // needed for the future flatMap/onComplete in the end
+    implicit val executionContext = system.dispatcher
+
+    val route =
+      path("hello") {
+        get {
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+        }
+      }
+
+    val bindingFuture = Http().bindAndHandle(route, "localhost", 7113)
+
+    println(s"Server online at http://localhost:7113/\nPress RETURN to stop...")
+    StdIn.readLine()
+    bindingFuture
+      .flatMap(_.unbind()) // trigger unbinding from the port
+      .onComplete(_ => system.terminate())
   }
 
 }

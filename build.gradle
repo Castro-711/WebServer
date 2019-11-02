@@ -29,10 +29,14 @@ dependencies {
 
     // Need scala-xml at test runtime
     testRuntimeOnly 'org.scala-lang.modules:scala-xml_2.12:1.1.1'
-    
+
     // Use Akka to power the Server
     compile group: 'com.typesafe.akka', name: 'akka-http_2.12',   version: '10.1.10'
     compile group: 'com.typesafe.akka', name: 'akka-stream_2.12', version: '2.5.23'
+
+    // Use log4j - scala to manage the logging of the project
+    compile group: 'org.apache.logging.log4j', name: 'log4j-scala', version: '11.0', ext: 'pom'
+
 }
 
 mainClassName='org.x.server.WebServer'
