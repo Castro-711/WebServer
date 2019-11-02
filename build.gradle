@@ -37,6 +37,9 @@ dependencies {
     // Use log4j - scala to manage the logging of the project
     compile group: 'org.apache.logging.log4j', name: 'log4j-scala', version: '11.0', ext: 'pom'
 
+    // Use for marshalling objects
+    compile group: 'com.typesafe.akka', name: 'akka-http-spray-json_2.12', version: '10.1.10'
+
 }
 
 mainClassName='org.x.server.WebServer'
